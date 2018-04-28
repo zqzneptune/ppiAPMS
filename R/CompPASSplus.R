@@ -9,10 +9,6 @@ normalize.wd <- function(xs, norm.factor) {
 }
 CompPASSplus <- function(raw_dat){
   library(tidyverse)
-  dat <-
-    dat %>%
-      group_by(`Run_id`, `Bait`, `Prey`) %>%
-      mutate(`Peptide_cnt` = max(`Peptide_cnt`))
   normFactor <-
     0.98
   k <-
