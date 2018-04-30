@@ -9,80 +9,87 @@ normalize.wd <- function(xs, norm.factor) {
 }
 CompPASSplus <- function(raw_dat){
   library(tidyverse)
-  normFactor <-
-    0.98
+  normFactor <- 0.98
   k <-
     length(unique(raw_dat$Bait))
   f <-
     unique(raw_dat[, c("Bait", "Prey")]) %>%
-    group_by(`Prey`) %>%
-    summarise(`f_sum` = n())
+    group_by(Prey) %>%
+    summarise(f_sum = n())
   p <-
     raw_dat[, c("Bait", "Prey")] %>%
-    group_by(`Bait`, `Prey`) %>%
-    summarise(`p` = n()) %>%
-    mutate(`BP` = paste(`Bait`, `Prey`, sep = "~"))
-
+    group_by(Bait, Prey) %>%
+    summarise(p = n()) %>%
+    mutate(BP = paste(Bait, Prey, sep = "~"))
   e <-
     raw_dat %>%
-    group_by(`Bait`, `Prey`, `Run_id`) %>%
-    summarize(`MaxTSC` = max(`Peptide_cnt`)) %>%
-    mutate(`Entropy` = entropy(`MaxTSC`)) %>%
-    mutate(`BP` = paste(`Bait`, `Prey`, sep = "~"))
+    group_by(Bait, Prey, Run_id) %>%
+    summarize(MaxTSC = max(Peptide_cnt)) %>%
+    mutate(Entropy = entropy(MaxTSC)) %>%
+    mutate(BP = paste(Bait, Prey, sep = "~"))
   stats <-
     raw_dat %>%
-    group_by(`Bait`, `Prey`) %>%
-    summarize(`AvePSM` = mean(`Peptide_cnt`)) %>%
-    mutate(`BP` = paste(`Bait`, `Prey`, sep = "~"))
+    group_by(Bait, Prey) %>%
+    summarize(AvePSM = mean(Peptide_cnt)) %>%
+    mutate(BP = paste(Bait, Prey, sep = "~"))
   dat <-
     stats %>%
     left_join(., unique(e[, c("BP", "Entropy")]), by = "BP") %>%
     left_join(., f, by = "Prey") %>%
     left_join(., p[, c("BP", "p")], by = "BP") %>%
-    mutate(`k` = k)
-  library(parallel)
-  numCores <- detectCores()
-  cl <- makeCluster(numCores)
-  clusterEvalQ(cl, {
-    library(tidyverse)
-  })
-  # clusterExport(cl, "dat")
-  # clusterExport(cl, "k")
-  pp <-
-    parApply(cl, dat, 1, function(x){
-      d <-
-        dat %>%
-        filter((`Bait` != x[2])&(`Prey` == x[2]))
-      f_num_no_prey <-
-        k-unique(d$f_sum)
-      if(nrow(d) == 0){
-        d <-
-          dat %>%
-          filter((`Bait` == x[2])&(`Prey` == x[2]))
-        f_num_no_prey <-
-          k
-      }
-      prey.sum <-
-        sum(d$AvePSM)
+    mutate(k = k)
+
+  preyWithBaitOnly <-
+    stats %>%
+    group_by(`Prey`) %>%
+    summarise(`nBait` = n()) %>%
+    filter(`nBait` == 1) %>%
+    .$Prey
+  dat <-
+    dat %>%
+    mutate(`f_num_no_prey` =
+             ifelse((`Bait` == `Prey`)&(`Prey` %in% preyWithBaitOnly),
+                    k, k-`f_sum`))
+  df_num_no_prey <-
+    unique(dat[, c("Prey", "f_num_no_prey")])
+  f_num_no_prey <-
+    df_num_no_prey$f_num_no_prey
+  names(f_num_no_prey) <-
+    df_num_no_prey$Prey
+  statsM <-
+    stats %>%
+    mutate(`AvePSM` = ifelse(`Bait` != `Prey`, `AvePSM`,
+                             ifelse(`Prey` %in% preyWithBaitOnly, `AvePSM`, NA)))
+  statsMatrix <-
+    spread(`statsM`[, c("Bait", "Prey", "AvePSM")], `Bait`, `AvePSM`)
+  m <-
+    as.matrix(statsMatrix[, -1])
+  rownames(m) <-
+    statsMatrix$Prey
+
+  prey.mean <-
+    apply(m, 1, function(x){
       prey.mean <-
-        prey.sum/k
-      prey.sum.squared.err <-
-        sum((d$AvePSM - prey.mean)^2) + ((prey.mean^2) * (f_num_no_prey))
-      prey.sd <- sqrt(prey.sum.squared.err / (k - 1))
-      return(c("SumAPSM" = prey.sum,
-               "Mean" = prey.mean,
-               "SD" = prey.sd))
+        sum(x, na.rm = TRUE)/k
     })
-  stopCluster(cl)
+
+  prey.stats <-
+    data.frame(`Prey` = names(prey.mean),
+               `Mean` = prey.mean,
+               `MeanDiff` = rowSums((m - prey.mean)^2, na.rm = TRUE),
+               `f_num_no_prey` = f_num_no_prey[names(prey.mean)],
+               stringsAsFactors = FALSE) %>%
+    mutate(`SD` =  sqrt((`MeanDiff` + ((`Mean`^2) * (`f_num_no_prey`)))/(k - 1)))
+
   avePSM <-
-    bind_cols(dat, data.frame(t(pp), stringsAsFactors = FALSE))
+    left_join(dat, prey.stats[, c("Prey", "Mean", "SD")], by = "Prey")
   output <-
     avePSM %>%
-    mutate(`Z_score` = (`AvePSM` - `Mean`)/(`SD`)) %>%
-    mutate(`S_score` = sqrt((`AvePSM`)*(`k`)/(`f_sum`))) %>%
-    mutate(`D_score` = sqrt((`AvePSM`)*(((`k`)/(`f_sum`))^`p`))) %>%
-    mutate(`WD_inner` = (`k` / `f_sum`) * (`SD` / `Mean`)) %>%
-    mutate(`WD_raw` = sqrt(`AvePSM` * (`WD_inner`^`p`)))
-  output[, "WD_score"] <- normalize.wd(output$`WD_raw`, normFactor)
+    mutate(Z_score = (AvePSM - Mean)/(SD)) %>%
+    mutate(S_score = sqrt((AvePSM) * (k)/(f_sum))) %>%
+    mutate(D_score = sqrt((AvePSM) * (((k)/(f_sum))^p))) %>%
+    mutate(WD_inner = (k/f_sum) * (SD/Mean)) %>%
+    mutate(WD_raw = sqrt(AvePSM * (WD_inner^p)))
+  output[, "WD_score"] <- normalize.wd(output$WD_raw, normFactor)
   return(output)
 }
