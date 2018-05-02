@@ -68,6 +68,9 @@ HG <- function(datInput){
   pps <-
     combn(names(preys), 2)
   numCores <- detectCores()
+  if(numCores > 4){
+    numCores <- 4
+  }
   cl <- makeCluster(numCores)
   # clusterExport(cl, "g.list")
   ppsTN <-
