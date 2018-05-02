@@ -32,7 +32,12 @@ HG <- function(datInput){
   system.time(
     ppsTN <-
       parApply(cl, pps, 2, function(x){
-        sum(apply(rbind(g.list[[x[1]]], g.list[[x[2]]]), 2, min), na.rm = TRUE)
+        # sum(apply(rbind(g.list[[x[1]]], g.list[[x[2]]]), 2, min), na.rm = TRUE)
+        gX <-
+          g.list[[x[1]]]
+        gY <-
+          g.list[[x[2]]]
+        sum(c(gX[gX < gY], gY[gY <= gX]), na.rm = TRUE)
       })
   )
   stopCluster(cl)
