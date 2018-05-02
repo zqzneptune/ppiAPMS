@@ -4,10 +4,17 @@ Title: Infer Protein-Protein Interactions From AP-MS data
 Version: 0.1.0
 Authors@R: c(
     person("Qingzhou", "Zhang", , "zqzneptune@hotmail.com", c("aut", "cre")))
+Maintainer: Qingzhou Zhang <zqzneptune@hotmail.com>
 Description: This is an R package that implements statistical modeling approaches
     that assign confidence scores to protein-protein interaction data 
-    generated using affinity purification–mass spectrometry (AP-MS), typically 
+    generated using affinity purification<U+2013>mass spectrometry (AP-MS), typically 
     label-free quantitative data.
+Imports: 
+    magrittr (>= 1.5), 
+    dplyr, 
+    stats, 
+    tidyr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.0.1

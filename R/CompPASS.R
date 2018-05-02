@@ -1,4 +1,34 @@
+#' CompPASS: Calculates Z-Scores, WD scores, and entropy for a given input
+#' table of AP-MS runs
+#'
+#'
+#' @title CompPASS
+#' @param raw_dat A table of Run_id, Bait, Prey, and Spectral counts.
+#' @return A data frame containing the following columns:
+#'         Bait, Prey, AvePSM, Entropy, Z, S, D, WD scores
+#' @importFrom dplyr group_by
+#' @importFrom dplyr summarise
+#' @importFrom dplyr mutate
+#' @importFrom dplyr left_join
+#' @importFrom dplyr filter
+#' @importFrom dplyr n
+#' @importFrom tidyr spread
+#' @importFrom magrittr %>%
+#' @importFrom stats quantile
+#' @importFrom stats sd
+#' @export
+#' @author Qingzhou Zhang
+
 CompPASS <- function(raw_dat){
+  Bait <- NULL
+  Prey <- NULL
+  Peptide_cnt <- NULL
+  AvePSM <- NULL
+  Stsc <- NULL
+  Mtsc <- NULL
+  f_sum <- NULL
+  . <- NULL
+
   k <-
     length(unique(raw_dat$Bait))
   statsTbl <-
