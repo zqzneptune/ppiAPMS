@@ -27,7 +27,7 @@
 #' @export
 #' @author Qingzhou Zhang
 
-HG <- function(datInput){
+HG <- function(datInput, numCores){
   . <- NULL
   Run_id <- NULL
   Peptide_cnt <- NULL
@@ -67,10 +67,10 @@ HG <- function(datInput){
     names(g.list)
   pps <-
     combn(names(preys), 2)
-  numCores <- detectCores()
-  if(numCores > 4){
-    numCores <- 4
-  }
+  # numCores <- detectCores()
+  # if(numCores > 4){
+  #   numCores <- 4
+  # }
   cl <- makeCluster(numCores)
   # clusterExport(cl, "g.list")
   ppsTN <-
