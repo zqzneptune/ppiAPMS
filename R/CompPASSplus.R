@@ -125,6 +125,8 @@ CompPASSplus <- function(raw_dat){
     mutate(`WD_raw` = sqrt(`AvePSM` * (`WD_inner`^`p`)))
   output[, "WD_score"] <-
     normalize.wd(output$WD_raw, normFactor)
+  output <-
+    as.data.frame(output)
   return(output)
 }
 
