@@ -21,3 +21,7 @@ importFrom(stats,sd)
 importFrom(stats,setNames)
 importFrom(tidyr,spread)
 importFrom(utils,combn)
+useDynLib(ppiAPMS, .registration=TRUE)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)
+

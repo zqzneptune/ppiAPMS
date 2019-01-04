@@ -14,20 +14,16 @@
 #' @importFrom dplyr n
 #' @importFrom tidyr spread
 #' @importFrom magrittr %>%
-
-#' @importFrom parallel detectCores
-#' @importFrom parallel makeCluster
-#' @importFrom parallel parApply
-#' @importFrom parallel stopCluster
 #' @importFrom utils combn
 #' @importFrom dplyr bind_rows
 #' @importFrom stats setNames
 #' @importFrom stats phyper
+#' @importFrom ppiAPMS GetPPN
 #'
 #' @export
 #' @author Qingzhou Zhang
 
-HG <- function(datInput, numCores){
+HG <- function(datInput){
   . <- NULL
   Run_id <- NULL
   Peptide_cnt <- NULL
@@ -55,43 +51,23 @@ HG <- function(datInput, numCores){
     spread(datCnt[, c("Run_id", "Prey", "Tn")], `Run_id`, `Tn`)
   g <-
     as.matrix(d[, -1])
+  g[is.na(g)] <- 0
   rownames(g) <-
     d$Prey
-  g.list <-
-    setNames(split(g, seq(nrow(g))), rownames(g))
-  names(g.list) <-
-    rownames(g)
-  preys <-
-    rep(0, length(names(g.list)))
-  names(preys) <-
-    names(g.list)
   pps <-
-    combn(names(preys), 2)
-  # numCores <- detectCores()
-  # if(numCores > 4){
-  #   numCores <- 4
-  # }
-  cl <- makeCluster(numCores)
-  # clusterExport(cl, "g.list")
-  ppsTN <-
-    parApply(cl, pps, 2, function(x){
-      # sum(apply(rbind(g.list[[x[1]]], g.list[[x[2]]]), 2, min), na.rm = TRUE)
-      gX <-
-        g.list[[x[1]]]
-      gY <-
-        g.list[[x[2]]]
-      sum(c(gX[gX < gY], gY[gY <= gX]), na.rm = TRUE)
-    })
-  stopCluster(cl)
-  ppiTN <-
-    ppsTN[ppsTN != 0]
-  ppi <-
-    pps[, ppsTN != 0]
+    combn(d$Prey, 2)
+  PPN <-
+    GetPPN(t(g))
+  CppPPN <-
+    PPN[lower.tri(PPN,diag = F)]
   datPPI <-
-    data.frame(cbind(t(ppi), ppiTN), stringsAsFactors = FALSE) %>%
-    mutate(`ppiTN` = as.numeric(`ppiTN`))
+    data.frame(cbind(t(pps[, CppPPN != 0]),
+                     CppPPN[CppPPN != 0]),
+               stringsAsFactors = FALSE)
   colnames(datPPI) <-
     c("InteractorA", "InteractorB", "ppiTN")
+  datPPI$ppiTN <-
+    as.numeric(datPPI$ppiTN)
   tnInteractorA <-
     datPPI[, c("InteractorA", "ppiTN")]
   colnames(tnInteractorA) <-
@@ -117,6 +93,7 @@ HG <- function(datInput, numCores){
       left_join(., sumMinTnInteractorA, by = "InteractorA") %>%
       left_join(., sumMinTnInteractorB, by = "InteractorB") %>%
       mutate(`NMinTn` = sum(tnProtein$minTn)/2) %>%
-      mutate(`HG` = -phyper(`ppiTN`, `tnA`, `NMinTn`-`tnB`,`tnB`, lower.tail=FALSE, log.p=TRUE))
+      mutate(`HG` = -phyper(`ppiTN`, `tnA`, `NMinTn`-`tnB`,`tnB`,
+                            lower.tail = FALSE, log.p = TRUE))
   return(scorePPI)
 }
