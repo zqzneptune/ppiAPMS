@@ -1,7 +1,6 @@
 #' HG: Calculates HG scoresa given input table of AP-MS runs
 #'
 #'
-#'
 #' @title HG
 #' @param datInput A table of Run_id, Prey, Spectral counts, Protein Length.
 #' @return A data frame containing the following columns:
@@ -18,8 +17,10 @@
 #' @importFrom dplyr bind_rows
 #' @importFrom stats setNames
 #' @importFrom stats phyper
-#' @importFrom ppiAPMS GetPPN
-#'
+#' @import Rcpp
+#' @importFrom Rcpp evalCpp
+#' @useDynLib ppiAPMS
+#' @exportPattern "^[[:alpha:]]+"
 #' @export
 #' @author Qingzhou Zhang
 

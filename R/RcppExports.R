@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 GetPPN <- function(mat) {
-    .Call(`_ppiAPMS_GetPPN`, mat)
+    .Call('_ppiAPMS_GetPPN', PACKAGE = 'ppiAPMS', mat)
 }
 

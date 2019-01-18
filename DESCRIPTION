@@ -1,6 +1,6 @@
 Package: ppiAPMS
 Type: Package
-Title: Infer Protein-Protein Interactions From AP-MS data
+Title: Scroing Protein-Protein Interactions From AP-MS data
 Version: 0.1.0
 Authors@R: c(
     person("Qingzhou", "Zhang", , "zqzneptune@hotmail.com", c("aut", "cre")))
@@ -19,5 +19,4 @@ LinkingTo: Rcpp
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
-
+RoxygenNote: 6.1.1
