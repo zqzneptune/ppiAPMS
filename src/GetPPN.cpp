@@ -1,7 +1,9 @@
 #include <Rcpp.h>
 using namespace Rcpp;
-// Compute sum of Tn values
-inline NumericMatrix GetPPN_helper(const NumericMatrix& mat){
+// Return sum of min across two vectors column-wise
+
+// [[Rcpp::export]]
+NumericMatrix GetPPN(NumericMatrix mat) {
   int nc = mat.ncol();
   int rstart = 0;
   int rend = mat.nrow();
@@ -22,9 +24,4 @@ inline NumericMatrix GetPPN_helper(const NumericMatrix& mat){
     }
   }
   return(rmat);
-}
-
-// [[Rcpp::export]]
-NumericMatrix GetPPN(NumericMatrix mat) {
-  return GetPPN_helper(mat);
 }
