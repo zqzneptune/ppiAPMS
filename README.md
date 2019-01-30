@@ -29,7 +29,7 @@ CompPASSplus(datInput)
 For *datInput*, we need more column 'lenPrey', while 'idBait' is not necessary:
 
 |idRun|idPrey|countPrey|lenPrey|
-|-----|:----:|:----:|:----:|:----:|
+|-----|:----:|:----:|:----:|
 |Unique ID of one affinity run|Prey ID|Peptide count|Prey protein length|
 
 Then run:
