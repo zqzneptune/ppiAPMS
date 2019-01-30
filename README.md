@@ -16,7 +16,7 @@ Summarize your AP-MS data from proteome database search into the dataframe *datI
 
 |idRun|idBait|idPrey|countPrey|
 |-----|:----:|:----:|:-------:|
-|Unique ID of one AP-MS run|Bait ID|Prey ID|Peptide count|
+|Unique ID of one AP-MS run|Bait ID|Prey ID|Prey peptide count|
 
 Then run:
 
@@ -30,7 +30,7 @@ For *datInput*, we need more column 'lenPrey', while 'idBait' is not necessary:
 
 |idRun|idPrey|countPrey|lenPrey|
 |-----|:----:|:----:|:----:|
-|Unique ID of one AP-MS run|Prey ID|Peptide count|Prey protein length|
+|Unique ID of one AP-MS run|Prey ID|Prey peptide count|Prey protein length|
 
 Then run:
 
