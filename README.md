@@ -41,3 +41,6 @@ Then run:
 ```{r}
 HG(datInput)
 ```
+## License
+
+MIT @ Qingzhou Zhang
