@@ -1,7 +1,7 @@
 # ppiAPMS
 This is an R package that implements statistical modeling approaches that assign confidence scores to protein-protein interaction data generated using affinity purification–mass spectrometry (AP-MS) data.
 
-## Download
+## Installation
 
 The development version can be installed through github:
 
@@ -17,3 +17,8 @@ Summarize your AP-MS data from proteome database search into the following forma
 |idRun|idBait|idPrey|countPrey|
 |-----|:----:|:----:|:-------:|
 |Unique ID of affinity run|Bait ID|Prey ID|Peptide count|
+
+Then run:
+
+CompPASS(datInput)
+CompPASSplus(datInput)
