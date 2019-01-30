@@ -4,10 +4,10 @@ This is an R package that implements statistical modeling approaches that assign
 ## Installation
 
 The development version can be installed through github:
-
-    devtools::install_github(repo="zqzneptune/ppiAPMS")
-    library(ppiAPMS)
-
+```{r}
+ devtools::install_github(repo="zqzneptune/ppiAPMS")
+ library(ppiAPMS)
+```
 ## Quick start
 
 1. CompPASS and CompPASS-Plus
@@ -20,9 +20,13 @@ Summarize your AP-MS data from proteome database search into the dataframe *datI
 
 Then run:
 
-**CompPASS(datInput)**
+```{r}
+CompPASS(datInput)
+```
 
-**CompPASSplus(datInput)**
+```{r}
+CompPASSplus(datInput)
+```
 
 2. HGScore
 
@@ -34,4 +38,6 @@ For *datInput*, we need more column 'lenPrey', while 'idBait' is not necessary:
 
 Then run:
 
-**HG(datInput)**
+```{r}
+HG(datInput)
+```
