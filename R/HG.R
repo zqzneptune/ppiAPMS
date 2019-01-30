@@ -1,8 +1,9 @@
 #' HGScore
 #' Scoring algorithm based on a hypergeometric distribution error model (Hart et al.,
-#'  2007) with incorporation of NSAF (Zybailov, Boris, et al., 2006). This algorithm was first introduced to
-#'  predict the protein complex network of Drosophila melanogaster
-#'  (Guruharsha, K. G., et al., 2011).
+#' 2007) with incorporation of NSAF (Zybailov, Boris, et al., 2006). This algorithm was first introduced to
+#' predict the protein complex network of Drosophila melanogaster
+#' (Guruharsha, K. G., et al., 2011). This scoring algorithm was based on matrix
+#' model.
 #'
 #' @title HGScore
 #' @param datInput A dataframe with column names: idRun, idPrey, countPrey, lenPrey.

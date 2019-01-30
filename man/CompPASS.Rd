@@ -4,19 +4,31 @@
 \alias{CompPASS}
 \title{CompPASS}
 \usage{
-CompPASS(raw_dat)
+CompPASS(datInput)
 }
 \arguments{
-\item{raw_dat}{A table of Run_id, Bait, Prey, and Spectral counts.}
+\item{datInput}{A dataframe with column names: idRun, idBait, idPrey, countPrey.
+Each row represent one unique protein captured in one pull-down experiment}
 }
 \value{
-A data frame containing the following columns:
-        Bait, Prey, AvePSM, Entropy, Z, S, D, WD scores
+A data frame consists of unique bait-prey pairs with Z-score, S-score,
+D-score and WD-score indicating interacting probabilities.
 }
 \description{
-CompPASS: Calculates Z-Scores, WD scores, and entropy for a given input
-table of AP-MS runs
+CompPASS
+Comparative Proteomic Analysis Software Suite (CompPASS) is based on spoke
+model. This algorithm was developed by Dr. Mathew Sowa for defining the human
+deubiquitinating enzyme interaction landscape (Sowa, Mathew E., et al., 2009)
+and later BioPlex 1.0 (Huttlin, Edward L., et al., 2015). The implementation
+of this algorithm was inspired by Dr. Sowa's online tutorial
+ (\url{http://besra.hms.harvard.edu/ipmsmsdbs/cgi-bin/tutorial.cgi}).
+The output includes Z-score, S-score, D-score and WD-score.
+}
+\references{
+Huttlin, Edward L., et al. "The BioPlex network: a systematic exploration of the human interactome." Cell 162.2 (2015): 425-440. \url{https://doi.org/10.1016/j.cell.2015.06.043}
+
+Sowa, Mathew E., et al. "Defining the human deubiquitinating enzyme interaction landscape." Cell 138.2 (2009): 389-403. \url{https://doi.org/10.1016/j.cell.2009.04.042}
 }
 \author{
-Qingzhou Zhang
+Qingzhou Zhang, \email{zqzneptune@hotmail.com}
 }

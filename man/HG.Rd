@@ -18,9 +18,10 @@ Hypergeometric test P-values.
 \description{
 HGScore
 Scoring algorithm based on a hypergeometric distribution error model (Hart et al.,
- 2007) with incorporation of NSAF (Zybailov, Boris, et al., 2006). This algorithm was first introduced to
- predict the protein complex network of Drosophila melanogaster
- (Guruharsha, K. G., et al., 2011).
+2007) with incorporation of NSAF (Zybailov, Boris, et al., 2006). This algorithm was first introduced to
+predict the protein complex network of Drosophila melanogaster
+(Guruharsha, K. G., et al., 2011). This scoring algorithm was based on matrix
+model.
 }
 \references{
 Guruharsha, K. G., et al. "A protein complex network of Drosophila melanogaster." Cell 147.3 (2011): 690-703.\url{https://doi.org/10.1016/j.cell.2011.08.047}

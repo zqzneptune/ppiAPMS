@@ -4,19 +4,23 @@
 \alias{CompPASSplus}
 \title{CompPASSplus}
 \usage{
-CompPASSplus(raw_dat)
+CompPASSplus(datInput)
 }
 \arguments{
-\item{raw_dat}{A table of Run_id, Bait, Prey, and Spectral counts.}
+\item{datInput}{A dataframe with column names: idRun, idBait, idPrey, countPrey.
+Each row represent one unique protein captured in one pull-down experiment}
 }
 \value{
-A data frame containing the following columns:
-        Bait, Prey, AvePSM, Entropy, Z, S, D, WD scores
+A data frame consists of unique bait-prey pairs with Z-score, S-score,
+D-score and WD-score indicating interacting probabilities.
 }
 \description{
-CompPASSplus: Calculates Z-Scores, WD scores, and entropy for a given input
-table of AP-MS runs
+CompPASSplus
+Implemented a naive Bayes classifier that learns to distinguish true
+ interacting proteins from non-specific background and false positive
+ identifications on the basis of CompPASS scores.
+ The source code for this function was based on the source code. \url{https://github.com/dnusinow/cRomppass}
 }
 \author{
-Qingzhou Zhang
+Qingzhou Zhang, \email{zqzneptune@hotmail.com}
 }

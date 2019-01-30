@@ -7,8 +7,7 @@ Authors@R: c(
 Maintainer: Qingzhou Zhang <zqzneptune@hotmail.com>
 Description: This is an R package that implements statistical modeling approaches
     that assign confidence scores to protein-protein interaction data 
-    generated using affinity purification<U+2013>mass spectrometry (AP-MS), typically 
-    label-free quantitative data.
+    generated using affinity purification mass spectrometry (AP-MS) data.
 Imports: 
     magrittr (>= 1.5), 
     dplyr, 
