@@ -20,9 +20,9 @@ Summarize your AP-MS data from proteome database search into the dataframe *datI
 
 Then run:
 
-CompPASS(datInput)
+**CompPASS(datInput)**
 
-CompPASSplus(datInput)
+**CompPASSplus(datInput)**
 
 2. HGScore
 
@@ -34,4 +34,4 @@ For *datInput*, we need more column 'lenPrey', while 'idBait' is not necessary:
 
 Then run:
 
-HG(datInput)
+**HG(datInput)**
